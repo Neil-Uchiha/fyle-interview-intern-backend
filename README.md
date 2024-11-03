@@ -1,58 +1,45 @@
 # Fyle Backend Challenge
 
-## Who is this for?
+## Overview
+This project is containerized using Docker, making it easier to set up and run in a consistent environment. Below are instructions on how to build, run, reset the database, and test the application.
 
-This challenge is meant for candidates who wish to intern at Fyle and work with our engineering team. You should be able to commit to at least 6 months of dedicated time for internship.
+## Prerequisites
+- Install [Docker](https://docs.docker.com/get-docker/)
+- Install [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Why work at Fyle?
+## Getting Started
 
-Fyle is a fast-growing Expense Management SaaS product. We are ~40 strong engineering team at the moment. 
+### Steps to Run the Application
 
-We are an extremely transparent organization. Check out our [careers page](https://careers.fylehq.com) that will give you a glimpse of what it is like to work at Fyle. Also, check out our Glassdoor reviews [here](https://www.glassdoor.co.in/Reviews/Fyle-Reviews-E1723235.htm). You can read stories from our teammates [here](https://stories.fylehq.com).
-
-
-## Challenge outline
-
-**You are allowed to use any online/AI tool such as ChatGPT, Gemini, etc. to complete the challenge. However, we expect you to fully understand the code and logic involved.**
-
-This challenge involves writing a backend service for a classroom. The challenge is described in detail [here](./Application.md)
-
-
-## What happens next?
-
-You will hear back within 48 hours from us via email. 
-
-
-## Installation
-
-1. Fork this repository to your github account
-2. Clone the forked repository and proceed with steps mentioned below
-
-### Install requirements
-
+1. Clone the repository:
 ```
-virtualenv env --python=python3.8
-source env/bin/activate
-pip install -r requirements.txt
+git clone https://github.com/Neil-Uchiha/fyle-interview-intern-backend.git
 ```
-### Reset DB
 
+2. Build and start the containers:
 ```
-export FLASK_APP=core/server.py
-rm core/store.sqlite3
-flask db upgrade -d core/migrations/
+docker-compose up --build
 ```
-### Start Server
 
+3. Reset the database (run these commands in a separate terminal window):
 ```
-bash run.sh
+docker-compose exec web rm core/store.sqlite3
+docker-compose exec web flask db upgrade -d core/migrations/
 ```
-### Run Tests
 
+4. To run the test suite:
 ```
-pytest -vvv -s tests/
+docker-compose run test  
+```
 
-# for test coverage report
-# pytest --cov
-# open htmlcov/index.html
+5. To generate a coverage report:
 ```
+docker-compose run test pytest --cov
+```
+
+### Additional Notes
+
+- The application will be available at `http://localhost:5000` once started.
+- You may need to adjust port mappings in the `docker-compose.yml` file if conflicts occur.
+- Ensure you have sufficient permissions to run Docker commands on your system.
+- If you face any issues with run.sh, it might need EOL conversion, use unix2dos if on linux, or convert LF to CRLF from bottom right of VS-Code
